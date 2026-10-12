@@ -59,11 +59,14 @@ export function Reader({ person, quotes, initialIndex, fromQParam }: ReaderProps
     return () => window.clearTimeout(t);
   }, [person.slug, fromQParam, total]);
 
-  /* ---- 翻页即写进度（首帧 index=0 且无 ?q= 时跳过，避免挂载瞬间抹掉已存进度） ---- */
+  /* ---- 翻页即写进度 ----
+   * 仅跳过「挂载后第一次」的初始写入（防覆盖存档）；翻回第 0 条属正常操作，照常保存 */
+  const saveMountedRef = useRef(false);
   useEffect(() => {
-    if (index > 0 || fromQParam) {
-      saveProgress(person.slug, { i: index, t: total, at: Date.now() });
-    }
+    const isFirst = !saveMountedRef.current;
+    saveMountedRef.current = true;
+    if (isFirst && index === 0 && !fromQParam) return;
+    saveProgress(person.slug, { i: index, t: total, at: Date.now() });
   }, [index, fromQParam, person.slug, total]);
 
   /* ---- 页面标题同步 ---- */

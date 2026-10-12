@@ -7,11 +7,13 @@ import type { Person, Quote } from "@/lib/types";
 // 翻页零网络请求 —— 这是沉浸阅读体验的底层保障。
 
 export const getPersonBySlug = cache(async (slug: string) => {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("people")
     .select("*")
     .eq("slug", slug)
     .maybeSingle();
+  // 数据库故障要抛错（与 getQuotesByPerson 一致），不能误报为「人物不存在/404」
+  if (error) throw error;
   return (data as Person | null) ?? null;
 });
 
