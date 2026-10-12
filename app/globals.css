@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #09090b; /* zinc-950：固定深色沉浸，无日间主题 */
+  --foreground: #e4e4e7; /* zinc-200 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif-cjk: "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC",
+    ui-serif, Georgia, serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 语录正文字体：宋体衬线，更有文气；系统字体零网络开销 */
+.font-quote {
+  font-family: var(--font-serif-cjk);
+}
+
+/* ---- 翻页动画：索引变化 → React key 重挂载 → 入场动画自动播放 ---- */
+.quote-enter {
+  animation: quote-in 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.quote-enter.from-right {
+  animation-name: quote-in-right; /* 下一页从右滑入 */
+}
+.quote-enter.from-left {
+  animation-name: quote-in-left; /* 上一页从左滑入 */
+}
+
+@keyframes quote-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes quote-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+@keyframes quote-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-enter {
+    animation: none;
+  }
+}
+
+/* 完成浮层入场 */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+}
+.overlay-enter {
+  animation: overlay-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .overlay-enter {
+    animation: none;
+  }
 }
