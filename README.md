@@ -2,7 +2,7 @@
 
 只收录单个人物语录的沉浸式阅读 Web App：干净、专注、带阅读进度记忆。
 
-**在线演示**：https://quote-reader-nysu901fj-henaijun3-9385.vercel.app
+**在线演示**：https://yulu-reader.vercel.app
 
 - 单条语录一页，居中大字，深色沉浸
 - 四通道翻页：按钮 / 键盘 ←→ / 桌面点击左右热区 / 移动端左右滑动
